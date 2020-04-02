@@ -1,0 +1,95 @@
+<style>
+    * { font-family: Arial, Helvetica, sans-serif; color: #114559; }
+    .header { font-weight: bold; background-color: #114559; color: white; }
+    .kpi { background-color: #588191; color: white; }
+    table { border: 1px solid #114559; border-collapse: collapse; }
+    .no-border { border: 0px; }
+    td { border-bottom: 1px solid #114559; padding: 2px; }
+    .footer { font-style: italic; font-size: smaller; color: #588191; }
+    td.header { border-bottom: 1px solid white; }
+    .pad-start { padding-inline-start: 0.8em; }
+    .pad-end { padding-inline-end: 0.8em; }
+    .num { text-align: end; }
+    .smaller { font-size: smaller; }
+</style>
+
+<h1>Résultats d'analyse CAST Highlight</h1>
+
+<div><b>Application <a href="{App.Url}" target="_blank">{App.Name}</a></b></div>
+<br/>
+<table class="no-border smaller">
+    <tr>
+        <td class="no-border">Snapshot "{SnapshotLabel}" pris le {SnapshotDate} à {SnapshotTime}</td>
+    </tr>
+</table>
+<table class="no-border smaller">
+    <tr>
+        <td class="pad-end no-border">Criticité métier:</td>
+        <td class="pad-end no-border"><b>{BusinessImpact}</b></td>
+        <td class="pad-start pad-end no-border">Index ROAR:</td>
+        <td class="pad-end no-border"><b>{RoarIndex}</b></td>
+    </tr>
+</table>
+<br/>
+<table>
+    <tr>
+        <td class="pad-end header">Indicateur</td>
+        <td class="pad-start pad-end header">Valeur</td>
+        <td class="pad-start pad-end header">Evolution</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">Software Resiliency</td>
+        <td class="pad-start num">{SoftwareResiliency}</td>
+        <td class="pad-start num">{Trend.SoftwareResiliency}</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">Software Agility</td>
+        <td class="pad-start num">{SoftwareAgility}</td>
+        <td class="pad-start num">{Trend.SoftwareAgility}</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">Software Elegance</td>
+        <td class="pad-start num">{SoftwareElegance}</td>
+        <td class="pad-start num">{Trend.SoftwareElegance}</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">CloudReady</td>
+        <td class="pad-start num">{CloudReady}</td>
+        <td class="pad-start num">{Trend.CloudReady}</td>
+    </tr>
+</table>
+<br/>
+<table>
+    <tr>
+        <td class="pad-end header">Métrique</td>
+        <td class="pad-start pad-end header">Valeur</td>
+        <td class="pad-start pad-end header">Evolution</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">Point de fonction "backfired"</td>
+        <td class="pad-start num">{BackFiredFP}</td>
+        <td class="pad-start num">{Trend.BackFiredFP}</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">Fichiers</td>
+        <td class="pad-start num">{TotalFiles}</td>
+        <td class="pad-start num">{Trend.TotalFiles}</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">Lignes de code</td>
+        <td class="pad-start num">{TotalLinesOfCode}</td>
+        <td class="pad-start num">{Trend.TotalLinesOfCode}</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">Dette techique</td>
+        <td class="pad-start num">{TechnicalDebt}</td>
+        <td class="pad-start num">{Trend.TechnicalDebt}</td>
+    </tr>
+    <tr>
+        <td class="pad-end kpi">Densité de dette techique</td>
+        <td class="pad-start num">{TechnicalDebtDensity}</td>
+        <td class="pad-start num">{Trend.TechnicalDebtDensity}</td>
+    </tr>
+</table>
+<br/>
+<div class="footer">Généré le {Date} à {Time}</div>
