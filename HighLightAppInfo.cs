@@ -48,8 +48,8 @@ namespace HighlightKPIExport {
             }
         }
 
-        public HighlightMetric CurrentMetrics => Metrics.Count > 0 ? Metrics[0] : null;
-        public HighlightMetric PreviousMetrics => Metrics.Count > 1 ? Metrics[1] : null;
+        public HighlightMetric CurrentMetrics => (Metrics != null && Metrics.Count > 0) ? Metrics[0] : null;
+        public HighlightMetric PreviousMetrics => (Metrics != null && Metrics.Count > 1) ? Metrics[1] : null;
 
         // Calcul des évolutions par rapport à l'analyse précédente 
         public HighlightMetric Trend { 
