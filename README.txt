@@ -38,7 +38,7 @@ Utilisation - Logs
 
 Le fichier Run_Highlight_Audit.bat permet de faciliter le lancement de l'outil.
 
-Il contient en particulier 2 paramètres qui doivent être modifiés afin de correspondre à votre organisation :
+Il contient en particulier 3 paramètres qui doivent être modifiés afin de correspondre à votre organisation :
 	- EMAIL_ADDRESS : doit contenir l'adresse email du compte Highlight utilisé pour se connecter
 	- COMPANYID : doit contenir l'identifiant de la société ciblée
 	- AUDIT_FILENAME : le nom du fichier Excel qui recevra les données d'audit
