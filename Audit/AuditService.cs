@@ -177,6 +177,7 @@ namespace HighlightKPIExport.Audit {
 
                 var events = new [] {
                     new EventInfo() { Category = "LOGIN", Label = "Login: Successfull connection" },
+                    new EventInfo() { Category = "LOGIN", Label = "Login: Incorrect password" },
                     new EventInfo() { Category = "LOGIN", Label = "Switch Company Context" },
                     new EventInfo() { Category = "LOGIN", Label = "Disconnect" },
                     new EventInfo() { Category = "ADMIN", Label = "Create Domain" },

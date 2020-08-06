@@ -16,6 +16,11 @@ namespace HighlightKPIExport.Audit {
         public override HighlightAudit GetResult() {
             var result = base.GetResult();
             result.CompanyId = CompanyId;
+            foreach (var log in result.Result) {
+                if (log.Action.StartsWith("Login: Incorrect password")) {
+                    log.Action = "Login: Incorrect password";
+                }
+            }
             return result;
         }
    }
