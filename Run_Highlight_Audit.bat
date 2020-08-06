@@ -10,7 +10,7 @@ REM l'identifiant de la société visée pour l'audit
 set COMPANYID=1234
 
 REM le nom du fichier Excel
-set AUDIT_FILENAME=HL_Audit_COMPANY_NAME_{timestamp}.xlsx
+set AUDIT_FILENAME="HL_Audit_COMPANY_NAME_{timestamp}.xlsx"
 
 REM arguments de la ligne de commande
 REM 1ère position = mot de passe ou nom du fichier contenant le mot de passe
