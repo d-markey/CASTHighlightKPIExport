@@ -73,11 +73,16 @@ namespace HighlightKPIExport.Audit {
                     };
                     var outputFileName = Template.ApplySymbols(Args.AuditFile.Value, symbols);
 
+                    var dirName = Path.GetDirectoryName(outputFileName);
+                    if (string.IsNullOrWhiteSpace(dirName)) dirName = ".";
+                    outputFileName = Path.GetFullPath(Path.Combine(dirName, outputFileName));
+
                     if (!File.Exists(outputFileName)) {
                         if (!await ReusePreviousSpreadsheet(outputFileName)) {
                             CreateSpreadSheet(outputFileName);
                         }
                     }
+                    Logger.Log(Args, $"Saving result to {outputFileName}");
 
                     using (var spreadSheet = new SpreadSheetFile(outputFileName)) {
                         var auditTrail = CreateAuditTrailSheet(spreadSheet, SheetNames.AuditTrail);
@@ -113,9 +118,7 @@ namespace HighlightKPIExport.Audit {
             var baseFileName = Path.GetFileName(Args.AuditFile.Value);
             var fileRegEx = new Regex(baseFileName.Replace(".", "\\.").Replace("{companyid}", "\\d+").Replace("{timestamp}", "(\\d{8})_(\\d{6})"));
 
-            var dirName = Path.GetDirectoryName(outputFileName);
-            if (string.IsNullOrWhiteSpace(dirName)) dirName = ".";
-            var dir = new DirectoryInfo(dirName);
+            var dir = new DirectoryInfo(Path.GetDirectoryName(outputFileName));
             var pattern = "*" + Path.GetExtension(outputFileName);
 
             var maxD = -1;
@@ -135,6 +138,7 @@ namespace HighlightKPIExport.Audit {
             }
 
             if (!string.IsNullOrWhiteSpace(lastFile)) {
+                Logger.Log(Args, $"Appending result to {lastFile}");
                 var bytes = await File.ReadAllBytesAsync(lastFile);
                 await File.WriteAllBytesAsync(outputFileName, bytes);
                 return true;
