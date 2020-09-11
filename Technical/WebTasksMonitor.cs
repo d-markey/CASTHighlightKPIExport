@@ -7,52 +7,63 @@ namespace HighlightKPIExport.Technical {
     // moniteur des tâches d'appel aux API Highlight
     public class WebTaskMonitor<T> {
 
-        public WebTaskMonitor(int maxRunning) {
-            MaxRunning = maxRunning;
+        public WebTaskMonitor(ILogger logger, int maxConcurrency) {
+            _logger = logger;
+            MaxConcurrency = maxConcurrency;
         }
 
-        private List<HighlightTask<T>> _tasks = new List<HighlightTask<T>>();
+        public int MaxConcurrency { get; private set; }
+
+        private ILogger _logger;
+        private List<ScheduledTask<T>> _tasks = new List<ScheduledTask<T>>();
         private List<T> _results = new List<T>();
+        private bool _locked = false;
 
-        public int MaxRunning { get; private set; }
-        public IEnumerable<T> Results => _results;
-
-        // récupération des résultats pour les tâches terminées
-        private void Harvest() {
-            var i = _tasks.Count - 1;
-            while (i >= 0) {
-                var task = _tasks[i];
-                if (task.IsCompleted) {
-                    T result;
-                    try {
-                        result = task.GetResult();
-                        _results.Add(result);
-                    } catch (Exception ex) {
-                        Console.WriteLine($"      Task failed for {task.Reference} : {ex.Message}");
-                    }
-                    _tasks.RemoveAt(i);
-                }
-                i--;
-            }
-        }
-
-        // gestion d'une nouvelle tâche
-        public void Add(HighlightTask<T> task) {
+        // prise en charge d'une nouvelle tâche
+        public void Add(ScheduledTask<T> task) {
+            if (_locked) throw new InvalidOperationException();
             _tasks.Add(task);
-            // gestion de la concurrence: si le nombre de tâches lancées en parallèle est supérieur au seuil, mise en attente jusqu'à ce qu'une tâche au moins ait fini
-            // le firewall des API Highlight blackliste les adresses IP qui envoie des rafales de requêtes
-            while (_tasks.Count > MaxRunning) {
-                Task.WaitAny(_tasks.Select(t => t.Task).ToArray());
-                Harvest();
-            }
         }
 
-        // attente de la fin des tâches d'appel aux API Highlight
-        public void WaitAll() {
-            while (_tasks.Count > 0) {
-                Task.WaitAny(_tasks.Select(t => t.Task).ToArray());
-                Harvest();
+        private void LoadResults(IEnumerable<ScheduledTask<T>> completedTasks) {
+            var completed = completedTasks.ToArray();
+            for (var i = 0; i < completed.Length; i++) {
+                var task = completed[i];
+                _tasks.Remove(task);
+                    try {
+                    _results.Add(task.GetResult());
+                    _logger.Log($"      Task #{task.Id} completed");
+                    } catch (Exception ex) {
+                    _logger.Log($"      Task #{task.Id} failed for {task.Reference} : {ex.Message}");
+                    }
+                }
             }
+
+        // planification des tâches d'appel aux API Highlight et récupération des résultats
+        public async Task<IEnumerable<T>> GetResults() {
+            _locked = true;
+            var waitingTasks = _tasks.Where(_ => !_.IsStarted);
+            var runningTasks = _tasks.Where(_ => _.IsStarted).Select(_ => _.Task);
+            var activeTasks = _tasks.Where(_ => _.IsStarted).Select(_ => _.Task).Where(_ => !_.IsCompleted);
+            var completedTasks = _tasks.Where(_ => _.IsCompleted);
+
+            // planification à concurrence de MaxConcurrency tâches actives à la fois
+            while (waitingTasks.Any()) {
+                var availableSlots = MaxConcurrency - activeTasks.Count();
+                if (availableSlots > 0) {
+                    foreach (var task in waitingTasks.Take(availableSlots)) {
+                        task.Start();
+        }
+
+            }
+                await Task.WhenAny(runningTasks);
+                LoadResults(completedTasks);
+        }
+
+            // attente de la fin des tâches
+            await Task.WhenAll(runningTasks);
+            LoadResults(completedTasks);
+            return _results;
         }
     }
 }

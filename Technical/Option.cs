@@ -5,50 +5,58 @@ using System.Text;
 
 namespace HighlightKPIExport.Technical {
     // description d'une option CLI
-    public class Option {
-        public Option(string name, string shortName, string description, bool flag, Func<string> getDefaultValue) {
+    public class Option<T> : IArgument {
+        public Option(string name, string shortName, string description, Func<T> getDefaultValue) {
             Name = name;
             ShortName = shortName;
-            Flag = flag;
             Description = description;
             GetDefaultValue = getDefaultValue;
         }
 
-        public Option(string name, string shortName, string description) : this(name, shortName, description, false, null) {
+        public Option(string name, string shortName, string description) : this(name, shortName, description, (Func<T>)null) {
         }
 
-        public Option(string name, string shortName, string description, bool flag) : this(name, shortName, description, flag, () => "false")  {
+        public Option(string name, string shortName, string description, T defaultValue) : this(name, shortName, description, () => defaultValue)  {
         }
 
-        public Option(string name, string shortName, string description, string defaultValue) : this(name, shortName, description, false, () => defaultValue)  {
-        }
+        public bool Flag => typeof(T) == typeof(bool) || typeof(T) == typeof(Boolean) || typeof(T) == typeof(Boolean?);
 
-        public Option(string name, string shortName, string description, Func<string> getDefaultValue) : this(name, shortName, description, false, getDefaultValue)  {
+        private string _name;
+        public string Name { 
+            get { 
+                return _name;
+            }
+            protected set {
+                value = (value ?? string.Empty).Trim();
+                if (value.Length == 0) throw new InvalidOperationException("Option must have a name.");
+                _name = value;
+            }
         }
-
-        public bool Flag { get; protected set; }
-        public string Name { get; protected set; }
         public string ShortName { get; protected set; }
         public string Description { get; protected set; }
-        public Func<string> GetDefaultValue { get; protected set; }
+        public Func<T> GetDefaultValue { get; protected set; }
 
-        protected readonly internal List<string> _values = new List<string>();
-        public IEnumerable<string> Values {
+        protected readonly internal List<T> _values = new List<T>();
+        public IEnumerable<T> Values {
             get {
                 if (_values.Any() || GetDefaultValue == null) return _values;
                 return new [] { GetDefaultValue() };
             }
         }
 
-        public string Value {
+        public T Value {
             get {
                 if (Values.Any()) return Values.Last();
                 if (GetDefaultValue != null) return GetDefaultValue();
-                return string.Empty;
+                return default(T);
             }
         }
 
-        public virtual StringBuilder AppendUsage(StringBuilder sb) {
+        public void SetValue(string value) {
+            _values.Add(Converters.GetValue<T>("--" + Name, value));
+        }
+
+        public StringBuilder AppendUsage(StringBuilder sb) {
             sb.Append("--").Append(Name);
             if (!Flag) {
                 sb.Append(" [value]");

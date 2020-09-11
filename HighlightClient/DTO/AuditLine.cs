@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 
-namespace HighlightKPIExport {
-    public class HighlightAuditLine {
+namespace HighlightKPIExport.Client.DTO {
+    public class AuditLine {
         static readonly DateTime EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public string Guid { get; set; }

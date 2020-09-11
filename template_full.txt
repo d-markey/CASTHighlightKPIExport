@@ -1,60 +1,191 @@
---- Various ---
-# = {#}
-Date = {Date}
-Time = {Time}
---- App info ---
-App.Id = {App.Id}
-App.Name = {App.Name}
-App.Url = {App.Url}
---- Current results ---
-SnapshotLabel = {SnapshotLabel}
-SnapshotDate = {SnapshotDate}
-SnapshotTime = {SnapshotTime}
-SoftwareAgility = {SoftwareAgility}
-SoftwareElegance = {SoftwareElegance}
-SoftwareResiliency = {SoftwareResiliency}
-CloudReady = {CloudReady}
-CloudReadyScan = {CloudReadyScan}
-Roadblocks = {Roadblocks}
-TotalLinesOfCode = {TotalLinesOfCode}
-TotalFiles = {TotalFiles}
-BackFiredFP = {BackFiredFP}
-BusinessImpact = {BusinessImpact}
-RoarIndex = {RoarIndex}
-TechnicalDebt = {TechnicalDebt}
-TechnicalDebtDensity = {TechnicalDebtDensity}
---- Previous results ---
-Previous.SnapshotLabel = {Previous.SnapshotLabel}
-Previous.SnapshotDate = {Previous.SnapshotDate}
-Previous.SnapshotTime = {Previous.SnapshotTime}
-Previous.SoftwareAgility = {Previous.SoftwareAgility}
-Previous.SoftwareElegance = {Previous.SoftwareElegance}
-Previous.SoftwareResiliency = {Previous.SoftwareResiliency}
-Previous.CloudReady = {Previous.CloudReady}
-Previous.CloudReadyScan = {Previous.CloudReadyScan}
-Previous.Roadblocks = {Previous.Roadblocks}
-Previous.TotalLinesOfCode = {Previous.TotalLinesOfCode}
-Previous.TotalFiles = {Previous.TotalFiles}
-Previous.BackFiredFP = {Previous.BackFiredFP}
-Previous.BusinessImpact = {Previous.BusinessImpact}
-Previous.RoarIndex = {Previous.RoarIndex}
-Previous.TechnicalDebt = {Previous.TechnicalDebt}
-Previous.TechnicalDebtDensity = {Previous.TechnicalDebtDensity}
---- Trends (current vs. previous results) ---
-Trend.SnapshotLabel = {Trend.SnapshotLabel}
-Trend.SnapshotDate = {Trend.SnapshotDate}
-Trend.SnapshotTime = {Trend.SnapshotTime}
-Trend.SoftwareAgility = {Trend.SoftwareAgility}
-Trend.SoftwareElegance = {Trend.SoftwareElegance}
-Trend.SoftwareResiliency = {Trend.SoftwareResiliency}
-Trend.CloudReady = {Trend.CloudReady}
-Trend.CloudReadyScan = {Trend.CloudReadyScan}
-Trend.Roadblocks = {Trend.Roadblocks}
-Trend.TotalLinesOfCode = {Trend.TotalLinesOfCode}
-Trend.TotalFiles = {Trend.TotalFiles}
-Trend.BackFiredFP = {Trend.BackFiredFP}
-Trend.BusinessImpact = {Trend.BusinessImpact}
-Trend.RoarIndex = {Trend.RoarIndex}
-Trend.TechnicalDebt = {Trend.TechnicalDebt}
-Trend.TechnicalDebtDensity = {Trend.TechnicalDebtDensity}
---- END ---
+List of available symbols:
+
+   === Report information ===
+    - Report Line Number                           = {#}
+    - Report Date                                  = {Date}
+    - Report Time                                  = {Time}
+
+   === Application information ===
+    - Application URL                              = {App.Url}
+    - Application Id                               = {App.Id}
+    - Application Name                             = {App.Name}
+
+   === Current analysis results ===
+    - Snapshot Label                               = {SnapshotLabel}
+    - Snapshot Date                                = {SnapshotDate}
+    - Snapshot Time                                = {SnapshotTime}
+    - Software Health Score                        = {SoftwareHealth}
+    - Software Agility Score                       = {SoftwareAgility}
+    - Software Elegance Score                      = {SoftwareElegance}
+    - Software Resiliency Score                    = {SoftwareResiliency}
+    - Open-Source Safety Score                     = {OpenSourceSafety}
+    - Cloud-Ready Score                            = {CloudReady}
+    - Cloud-Ready Scan Score                       = {CloudReadyScan}
+    - Number of Roadblocks                         = {Roadblocks}
+    - Total Number of Lines of Code                = {TotalLinesOfCode}
+    - Total Number of Files                        = {TotalFiles}
+    - Back-Fired Function Points                   = {BackFiredFP}
+    - Business Impact Score                        = {BusinessImpact}
+    - Highlight ROAR Index                         = {RoarIndex}
+    - Technical Debt                               = {TechnicalDebt}
+    - Technical Debt Density                       = {TechnicalDebtDensity}
+
+   === Current analysis results (synonym) ===
+    - Snapshot Label                               = {Current.SnapshotLabel}
+    - Snapshot Date                                = {Current.SnapshotDate}
+    - Snapshot Time                                = {Current.SnapshotTime}
+    - Software Health Score                        = {Current.SoftwareHealth}
+    - Software Agility Score                       = {Current.SoftwareAgility}
+    - Software Elegance Score                      = {Current.SoftwareElegance}
+    - Software Resiliency Score                    = {Current.SoftwareResiliency}
+    - Open-Source Safety Score                     = {Current.OpenSourceSafety}
+    - Cloud-Ready Score                            = {Current.CloudReady}
+    - Cloud-Ready Scan Score                       = {Current.CloudReadyScan}
+    - Number of Roadblocks                         = {Current.Roadblocks}
+    - Total Number of Lines of Code                = {Current.TotalLinesOfCode}
+    - Total Number of Files                        = {Current.TotalFiles}
+    - Back-Fired Function Points                   = {Current.BackFiredFP}
+    - Business Impact Score                        = {Current.BusinessImpact}
+    - Highlight ROAR Index                         = {Current.RoarIndex}
+    - Technical Debt                               = {Current.TechnicalDebt}
+    - Technical Debt Density                       = {Current.TechnicalDebtDensity}
+
+   === Previous analysis results ===
+    - Snapshot Label                               = {Previous.SnapshotLabel}
+    - Snapshot Date                                = {Previous.SnapshotDate}
+    - Snapshot Time                                = {Previous.SnapshotTime}
+    - Software Health Score                        = {Previous.SoftwareHealth}
+    - Software Agility Score                       = {Previous.SoftwareAgility}
+    - Software Elegance Score                      = {Previous.SoftwareElegance}
+    - Software Resiliency Score                    = {Previous.SoftwareResiliency}
+    - Open-Source Safety Score                     = {Previous.OpenSourceSafety}
+    - Cloud-Ready Score                            = {Previous.CloudReady}
+    - Cloud-Ready Scan Score                       = {Previous.CloudReadyScan}
+    - Number of Roadblocks                         = {Previous.Roadblocks}
+    - Total Number of Lines of Code                = {Previous.TotalLinesOfCode}
+    - Total Number of Files                        = {Previous.TotalFiles}
+    - Back-Fired Function Points                   = {Previous.BackFiredFP}
+    - Business Impact Score                        = {Previous.BusinessImpact}
+    - Highlight ROAR Index                         = {Previous.RoarIndex}
+    - Technical Debt                               = {Previous.TechnicalDebt}
+    - Technical Debt Density                       = {Previous.TechnicalDebtDensity}
+
+   === Trend vs. previous analysis ===
+    - Label of the previous snapshot               = {Trend.SnapshotLabel}
+    - Date of the previous snapshot                = {Trend.SnapshotDate}
+    - Time of the previous snapshot                = {Trend.SnapshotTime}
+    - Software Health Score Evolution              = {Trend.SoftwareHealth}
+    - Software Agility Score Evolution             = {Trend.SoftwareAgility}
+    - Software Elegance Score Evolution            = {Trend.SoftwareElegance}
+    - Software Resiliency Score Evolution          = {Trend.SoftwareResiliency}
+    - Open-Source Safety Score Evolution           = {Trend.OpenSourceSafety}
+    - Cloud-Ready Score Evolution                  = {Trend.CloudReady}
+    - Cloud-Ready Scan Score Evolution             = {Trend.CloudReadyScan}
+    - Evolution of Number of Roadblocks            = {Trend.Roadblocks}
+    - Evolution of Number of Lines of Code         = {Trend.TotalLinesOfCode}
+    - Evolution of Number of Files                 = {Trend.TotalFiles}
+    - Back-Fired Function Points Evolution         = {Trend.BackFiredFP}
+    - Business Impact Evolution                    = {Trend.BusinessImpact}
+    - Highlight ROAR Index Evolution               = {Trend.RoarIndex}
+    - Technical Debt Evolution                     = {Trend.TechnicalDebt}
+    - Technical Debt Density Evolution             = {Trend.TechnicalDebtDensity}
+
+   === Trend vs. previous analysis older than 1 week ===
+    - Label of the previous snapshot               = {Trend.1-week.SnapshotLabel}
+    - Date of the previous snapshot                = {Trend.1-week.SnapshotDate}
+    - Time of the previous snapshot                = {Trend.1-week.SnapshotTime}
+    - Software Health Score Evolution              = {Trend.1-week.SoftwareHealth}
+    - Software Agility Score Evolution             = {Trend.1-week.SoftwareAgility}
+    - Software Elegance Score Evolution            = {Trend.1-week.SoftwareElegance}
+    - Software Resiliency Score Evolution          = {Trend.1-week.SoftwareResiliency}
+    - Open-Source Safety Score Evolution           = {Trend.1-week.OpenSourceSafety}
+    - Cloud-Ready Score Evolution                  = {Trend.1-week.CloudReady}
+    - Cloud-Ready Scan Score Evolution             = {Trend.1-week.CloudReadyScan}
+    - Evolution of Number of Roadblocks            = {Trend.1-week.Roadblocks}
+    - Evolution of Number of Lines of Code         = {Trend.1-week.TotalLinesOfCode}
+    - Evolution of Number of Files                 = {Trend.1-week.TotalFiles}
+    - Back-Fired Function Points Evolution         = {Trend.1-week.BackFiredFP}
+    - Business Impact Evolution                    = {Trend.1-week.BusinessImpact}
+    - Highlight ROAR Index Evolution               = {Trend.1-week.RoarIndex}
+    - Technical Debt Evolution                     = {Trend.1-week.TechnicalDebt}
+    - Technical Debt Density Evolution             = {Trend.1-week.TechnicalDebtDensity}
+
+   === Trend vs. previous analysis older than 2 weeks ===
+    - Label of the previous snapshot               = {Trend.2-weeks.SnapshotLabel}
+    - Date of the previous snapshot                = {Trend.2-weeks.SnapshotDate}
+    - Time of the previous snapshot                = {Trend.2-weeks.SnapshotTime}
+    - Software Health Score Evolution              = {Trend.2-weeks.SoftwareHealth}
+    - Software Agility Score Evolution             = {Trend.2-weeks.SoftwareAgility}
+    - Software Elegance Score Evolution            = {Trend.2-weeks.SoftwareElegance}
+    - Software Resiliency Score Evolution          = {Trend.2-weeks.SoftwareResiliency}
+    - Open-Source Safety Score Evolution           = {Trend.2-weeks.OpenSourceSafety}
+    - Cloud-Ready Score Evolution                  = {Trend.2-weeks.CloudReady}
+    - Cloud-Ready Scan Score Evolution             = {Trend.2-weeks.CloudReadyScan}
+    - Evolution of Number of Roadblocks            = {Trend.2-weeks.Roadblocks}
+    - Evolution of Number of Lines of Code         = {Trend.2-weeks.TotalLinesOfCode}
+    - Evolution of Number of Files                 = {Trend.2-weeks.TotalFiles}
+    - Back-Fired Function Points Evolution         = {Trend.2-weeks.BackFiredFP}
+    - Business Impact Evolution                    = {Trend.2-weeks.BusinessImpact}
+    - Highlight ROAR Index Evolution               = {Trend.2-weeks.RoarIndex}
+    - Technical Debt Evolution                     = {Trend.2-weeks.TechnicalDebt}
+    - Technical Debt Density Evolution             = {Trend.2-weeks.TechnicalDebtDensity}
+
+   === Trend vs. previous analysis older than 3 weeks ===
+    - Label of the previous snapshot               = {Trend.3-weeks.SnapshotLabel}
+    - Date of the previous snapshot                = {Trend.3-weeks.SnapshotDate}
+    - Time of the previous snapshot                = {Trend.3-weeks.SnapshotTime}
+    - Software Health Score Evolution              = {Trend.3-weeks.SoftwareHealth}
+    - Software Agility Score Evolution             = {Trend.3-weeks.SoftwareAgility}
+    - Software Elegance Score Evolution            = {Trend.3-weeks.SoftwareElegance}
+    - Software Resiliency Score Evolution          = {Trend.3-weeks.SoftwareResiliency}
+    - Open-Source Safety Score Evolution           = {Trend.3-weeks.OpenSourceSafety}
+    - Cloud-Ready Score Evolution                  = {Trend.3-weeks.CloudReady}
+    - Cloud-Ready Scan Score Evolution             = {Trend.3-weeks.CloudReadyScan}
+    - Evolution of Number of Roadblocks            = {Trend.3-weeks.Roadblocks}
+    - Evolution of Number of Lines of Code         = {Trend.3-weeks.TotalLinesOfCode}
+    - Evolution of Number of Files                 = {Trend.3-weeks.TotalFiles}
+    - Back-Fired Function Points Evolution         = {Trend.3-weeks.BackFiredFP}
+    - Business Impact Evolution                    = {Trend.3-weeks.BusinessImpact}
+    - Highlight ROAR Index Evolution               = {Trend.3-weeks.RoarIndex}
+    - Technical Debt Evolution                     = {Trend.3-weeks.TechnicalDebt}
+    - Technical Debt Density Evolution             = {Trend.3-weeks.TechnicalDebtDensity}
+
+   === Trend vs. previous analysis older than 1 month ===
+    - Label of the previous snapshot               = {Trend.1-month.SnapshotLabel}
+    - Date of the previous snapshot                = {Trend.1-month.SnapshotDate}
+    - Time of the previous snapshot                = {Trend.1-month.SnapshotTime}
+    - Software Health Score Evolution              = {Trend.1-month.SoftwareHealth}
+    - Software Agility Score Evolution             = {Trend.1-month.SoftwareAgility}
+    - Software Elegance Score Evolution            = {Trend.1-month.SoftwareElegance}
+    - Software Resiliency Score Evolution          = {Trend.1-month.SoftwareResiliency}
+    - Open-Source Safety Score Evolution           = {Trend.1-month.OpenSourceSafety}
+    - Cloud-Ready Score Evolution                  = {Trend.1-month.CloudReady}
+    - Cloud-Ready Scan Score Evolution             = {Trend.1-month.CloudReadyScan}
+    - Evolution of Number of Roadblocks            = {Trend.1-month.Roadblocks}
+    - Evolution of Number of Lines of Code         = {Trend.1-month.TotalLinesOfCode}
+    - Evolution of Number of Files                 = {Trend.1-month.TotalFiles}
+    - Back-Fired Function Points Evolution         = {Trend.1-month.BackFiredFP}
+    - Business Impact Evolution                    = {Trend.1-month.BusinessImpact}
+    - Highlight ROAR Index Evolution               = {Trend.1-month.RoarIndex}
+    - Technical Debt Evolution                     = {Trend.1-month.TechnicalDebt}
+    - Technical Debt Density Evolution             = {Trend.1-month.TechnicalDebtDensity}
+
+   === Trend vs. previous analysis older than 3 months ===
+    - Label of the previous snapshot               = {Trend.3-months.SnapshotLabel}
+    - Date of the previous snapshot                = {Trend.3-months.SnapshotDate}
+    - Time of the previous snapshot                = {Trend.3-months.SnapshotTime}
+    - Software Health Score Evolution              = {Trend.3-months.SoftwareHealth}
+    - Software Agility Score Evolution             = {Trend.3-months.SoftwareAgility}
+    - Software Elegance Score Evolution            = {Trend.3-months.SoftwareElegance}
+    - Software Resiliency Score Evolution          = {Trend.3-months.SoftwareResiliency}
+    - Open-Source Safety Score Evolution           = {Trend.3-months.OpenSourceSafety}
+    - Cloud-Ready Score Evolution                  = {Trend.3-months.CloudReady}
+    - Cloud-Ready Scan Score Evolution             = {Trend.3-months.CloudReadyScan}
+    - Evolution of Number of Roadblocks            = {Trend.3-months.Roadblocks}
+    - Evolution of Number of Lines of Code         = {Trend.3-months.TotalLinesOfCode}
+    - Evolution of Number of Files                 = {Trend.3-months.TotalFiles}
+    - Back-Fired Function Points Evolution         = {Trend.3-months.BackFiredFP}
+    - Business Impact Evolution                    = {Trend.3-months.BusinessImpact}
+    - Highlight ROAR Index Evolution               = {Trend.3-months.RoarIndex}
+    - Technical Debt Evolution                     = {Trend.3-months.TechnicalDebt}
+    - Technical Debt Density Evolution             = {Trend.3-months.TechnicalDebtDensity}

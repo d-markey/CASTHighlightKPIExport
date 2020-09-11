@@ -1,21 +1,23 @@
+using System;
 using System.Threading.Tasks;
 
 using HighlightKPIExport.Technical;
+using HighlightKPIExport.Client.DTO;
 
 namespace HighlightKPIExport.KPIs {
-    public class HighlightAppTask : HighlightTask<HighlightAppInfo> {
+    public class HighlightAppInfoTask : ScheduledTask<AppInfo> {
         // wrapper pour les tâches asynchrones d'appel aux API Highlight
-        public HighlightAppTask(string baseUrl, HighlightAppId app, Task<HighlightAppInfo> task) : base(task) {
+        public HighlightAppInfoTask(Uri baseUrl, AppId app, Func<Task<AppInfo>> taskBuilder) : base(taskBuilder) {
             App = app;
             BaseUrl = baseUrl;
         }
 
-        public HighlightAppId App { get; private set; }
-        public string BaseUrl { get; private set; }
+        public AppId App { get; private set; }
+        public Uri BaseUrl { get; private set; }
 
         public override string Reference => $"{App.Id} / {App.Name}";
 
-        public override HighlightAppInfo GetResult() {
+        public override AppInfo GetResult() {
             var result = base.GetResult();
             result.Url = $"{BaseUrl}/#Explore/Applications/{App.Id}/Detail";
             return result;

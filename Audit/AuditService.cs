@@ -8,15 +8,23 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 using HighlightKPIExport.Technical;
+using HighlightKPIExport.Client;
+using HighlightKPIExport.Client.DTO;
 
 namespace HighlightKPIExport.Audit {
     public class AuditService {
 
-        public AuditService(Args args) {
-            Args = args;
+        public AuditService(ILogger logger, HighlightClient client, IAuditContext context) {
+            _logger = logger;
+            _client = client;
+            _auditFile = context.AuditFile;
+            _companyIds = context.CompanyIds.ToArray();
         }
 
-        public Args Args { get; private set; }
+        private readonly ILogger _logger;
+        private readonly HighlightClient _client;
+        private readonly string _auditFile;
+        private readonly string[] _companyIds;
 
         private static class SheetNames {
             public const string Graph = "Graph";
@@ -33,34 +41,29 @@ namespace HighlightKPIExport.Audit {
             }
         }
 
-        async Task<List<HighlightAudit>> LoadAuditInfo() {
+        async Task<List<AuditLog>> LoadAuditInfo() {
             // chargement asynchrone des traces d'audit des sociétés
-            var companyIds = Args.CompanyIds.Values.ToList();
-            if (!companyIds.Any()) {
-                return new List<HighlightAudit>();
+            if (_companyIds.Length == 0) {
+                return new List<AuditLog>();
             }
 
-            var credentialService = new CredentialService(Args);
-            var highlightAPi = HighlightClient.Build(Args);
-            highlightAPi.Credential = await credentialService.GetCredential();
-
-            Logger.Log(Args, $"Fetching {companyIds.Count} audit info from {highlightAPi.BaseUrl}");
-            var webTaskMonitor = new WebTaskMonitor<HighlightAudit>(1);
-            foreach (var companyId in companyIds) {
-                Logger.Log(Args, $"   Fetching audit info for company {companyId}...");
+            _logger.Log($"Fetching {_companyIds.Length} audit info from {_client.BaseUrl}");
+            var webTaskMonitor = WebTaskMonitorFactory.Build<AuditLog>(_logger);
+            for (var i = 0; i < _companyIds.Length; i++) {
+                var companyId = _companyIds[i];
                 // appel asynchrone des API Highlight
-                webTaskMonitor.Add(new HighlightAuditTask(companyId, highlightAPi.GetAuditForCompany<HighlightAudit>(companyId)));
+                var task = new HighlightAuditTask(companyId, () => _client.GetAuditForCompany(companyId));
+                _logger.Log($"   Starting task #{task.Id} for audit info for company {companyId}...");
+                webTaskMonitor.Add(task);
             }
-
-            // attente de la fin des chargements
-            webTaskMonitor.WaitAll();
 
             // récupération des résultats
-            return webTaskMonitor.Results.ToList();
+            var results = await webTaskMonitor.GetResults();
+            return results.ToList();
         }
  
         // génération du fichier de sortie
-        async Task WriteAuditInfo(List<HighlightAudit> audits) {
+        async Task WriteAuditInfo(List<AuditLog> audits) {
             if (audits != null && audits.Count > 0) {
                 var guids = new Dictionary<string, string>();
                 for (var i = 0; i < audits.Count; i++) {
@@ -71,7 +74,7 @@ namespace HighlightKPIExport.Audit {
                         { "companyid", audit.CompanyId },
                         { "timestamp", DateTime.UtcNow.ToString("yyyyMMdd_HHmmss") } 
                     };
-                    var outputFileName = Template.ApplySymbols(Args.AuditFile.Value, symbols);
+                    var outputFileName = Template.ApplySymbols(_auditFile, symbols);
 
                     var dirName = Path.GetDirectoryName(outputFileName);
                     if (string.IsNullOrWhiteSpace(dirName)) dirName = ".";
@@ -82,12 +85,13 @@ namespace HighlightKPIExport.Audit {
                             CreateSpreadSheet(outputFileName);
                         }
                     }
-                    Logger.Log(Args, $"Saving result to {outputFileName}");
+                    _logger.Log($"Saving result to {outputFileName}");
 
                     using (var spreadSheet = new SpreadSheetFile(outputFileName)) {
                         var auditTrail = CreateAuditTrailSheet(spreadSheet, SheetNames.AuditTrail);
                         var colA = spreadSheet.LoadColumnCells(auditTrail, "A");
-                        foreach (var c in colA) {
+                        for (var j = 0; j < colA.Count; j++) {
+                            var c = colA[j];
                             var guid = spreadSheet.GetCellValue(c)?.ToString() ?? string.Empty;
                             if (!string.IsNullOrWhiteSpace(guid)) {
                                 guids.Add(guid, null);
@@ -115,7 +119,7 @@ namespace HighlightKPIExport.Audit {
         // l'API ne renvoie pas tous les évènements à chaque appel, p.ex. les évènements de login ne sont renvoyés que sur le mois en cours
         // il est possible de conserver l'historique en réutilisant le fichier généré précédemment
         async Task<bool> ReusePreviousSpreadsheet(string outputFileName) {
-            var baseFileName = Path.GetFileName(Args.AuditFile.Value);
+            var baseFileName = Path.GetFileName(_auditFile);
             var fileRegEx = new Regex(baseFileName.Replace(".", "\\.").Replace("{companyid}", "\\d+").Replace("{timestamp}", "(\\d{8})_(\\d{6})"));
 
             var dir = new DirectoryInfo(Path.GetDirectoryName(outputFileName));
@@ -138,7 +142,7 @@ namespace HighlightKPIExport.Audit {
             }
 
             if (!string.IsNullOrWhiteSpace(lastFile)) {
-                Logger.Log(Args, $"Appending result to {lastFile}");
+                _logger.Log($"Appending result to {lastFile}");
                 var bytes = await File.ReadAllBytesAsync(lastFile);
                 await File.WriteAllBytesAsync(outputFileName, bytes);
                 return true;

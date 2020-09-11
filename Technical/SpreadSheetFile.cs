@@ -164,13 +164,14 @@ namespace HighlightKPIExport.Technical {
         // calcul de l'index de la dernière ligne de données
         public uint GetMaxRow(List<Cell> cells) {
             uint maxRow = 0;
-            foreach (var cell in cells) {
-                var i = 0;
-                var l = cell.CellReference.Value.Length;
-                while (i < l && !char.IsNumber(cell.CellReference.Value[i])) {
-                    i++;
+            for (var i = 0; i < cells.Count; i++) {
+                var cell = cells[i];
+                var idx = 0;
+                var len = cell.CellReference.Value.Length;
+                while (idx < len && !char.IsNumber(cell.CellReference.Value[idx])) {
+                    idx++;
                 }
-                if (i < l && uint.TryParse(cell.CellReference.Value.Substring(i), out uint row) && row > maxRow) {
+                if (idx < len && uint.TryParse(cell.CellReference.Value.Substring(idx), out uint row) && row > maxRow) {
                     var v = GetCellValue(cell)?.ToString() ?? string.Empty;
                     if (!string.IsNullOrWhiteSpace(v)) {
                         maxRow = row;
@@ -194,8 +195,7 @@ namespace HighlightKPIExport.Technical {
             var cell = row.Elements<Cell>().Where(c => c.CellReference.Value == cellReference).FirstOrDefault();
             if (cell == null) {
                 Cell refCell = null;
-                foreach (Cell c in row.Elements<Cell>())
-                {
+                foreach (Cell c in row.Elements<Cell>()) {
                     if (c.CellReference.Value.Length == cellReference.Length) {
                         if (string.Compare(c.CellReference.Value, cellReference, StringComparison.InvariantCultureIgnoreCase) > 0) {
                             refCell = c;
