@@ -1,3 +1,20 @@
+// HighlightKPIExport
+// Copyright (C) 2020-2022 David MARKEY
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +39,10 @@ namespace HighlightKPIExport {
 
         public Args() {
             Url =            new Option<Uri>        ("url",              "s",    $"base URL of CAST Highlight server; default is {Default.DefaultBaseUrl}", Default.DefaultBaseUrl);
+            Token =          new Option<string>     ("token",            "tk",   $"token; if this is the name of an existing file, the token is read from this file; takes precedence over credential, user and password");
+            Credentials =    new Option<string>     ("credentials",      "c",    $"credential file name; the file must contain user id and password separated by a colon, e.g. \"me@acme.com:my_Pa$$W0rd\"; takes precedence over user and password");
             User =           new Option<MailAddress>("user",             "u",    $"user id (the email address the user registered with)", (MailAddress)null);
             Password =       new Option<string>     ("password",         "p",    $"password; if this is the name of an existing file, the password is read from this file");
-            Credentials =    new Option<string>     ("credentials",      "c",    $"credential file name; the file must contain user id and password separated by a colon, e.g. \"me@acme.com:my_Pa$$W0rd\"");
             DomainIds =      new Option<string>     ("domainid",         "d",    $"id of an Highlight domain; mandatory; the company id is also a domain id; multiple occurrences are allowed");
             AppIds =         new Option<string>     ("appid",            "a",    $"id of an Highlight application; optional; multiple occurrences are allowed; if no app id is provided, KPIs for all applications from the specified domain(s) will be extracted");
             Template =       new Option<string>     ("template",         "t",    $"file name of the template file; by default, \"{Default.ScoreCardTemplateName}\" for a single application, \"{Default.CsvTemplateName}\" for multiple applications", () => AppIds.Values.Take(2).Count() == 1 ? Default.ScoreCardTemplateName : Default.CsvTemplateName);
@@ -35,11 +53,12 @@ namespace HighlightKPIExport {
             Verbose =        new Option<bool>       ("verbose",          "v",    $"turn verbosity on", false);
             Symbols =        new Option<bool>       ("symbols",          "sl",   $"display list of available symbols", false);
             Help =           new Option<bool>       ("help",             "h",    $"display help information", false);
-            fallback =      new Option<string>     ("*", "", "");
+            fallback =       new Option<string>     ("*", "", "");
 
             _options = new IArgument[] {
                 new Separator("Connection Information"),
                 Url,
+                Token,
                 User,
                 Password,
                 Credentials,
@@ -65,6 +84,7 @@ namespace HighlightKPIExport {
         protected override IEnumerable<IArgument> Options => _options;
 
         public readonly Option<Uri> Url;
+        public readonly Option<string> Token;
         public readonly Option<MailAddress> User;
         public readonly Option<string> Password;
         public readonly Option<string> Credentials;
@@ -124,6 +144,7 @@ namespace HighlightKPIExport {
         string ICredentialConfig.CredentialFileName => Credentials.Value;
         string ICredentialConfig.UserId => User.Value?.Address;
         string ICredentialConfig.Password => Password.Value;
+        string ICredentialConfig.Token => Token.Value;
 
         string IAppInfoContext.TemplateFileName => Template.Value;
         string IAppInfoContext.OutputFileName => Output.Value;

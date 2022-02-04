@@ -1,3 +1,20 @@
+// HighlightKPIExport
+// Copyright (C) 2020-2022 David MARKEY
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -88,6 +105,12 @@ namespace HighlightKPIExport.KPIs {
 
             // récupération des résultats
             var results = await webTaskMonitor.GetResults();
+            var oss = results.SelectMany(app => app.Metrics.Where(m => m.OssDetail != null).Select(m => m.OssDetail)).ToList();
+            if (oss.Any(o => o.OpenSourceCVE != null || o.OpenSourceLicense != null || o.OpenSourceObsolescence != null)) {
+                Console.WriteLine(oss);
+            } else {
+                Console.WriteLine("OSS is empty");
+            }
             return results.OrderByDescending(app => app.CurrentMetrics?.BusinessImpact ?? 0).ToList();
         }
 
@@ -268,9 +291,6 @@ namespace HighlightKPIExport.KPIs {
             symbols.Add(prefix + "Url",   app.Url);
             symbols.Add(prefix + "Id",   app.Id);
             symbols.Add(prefix + "Name", app.Name);
-            symbols.Add(prefix + "App.Url",   app.Url);
-            symbols.Add(prefix + "App.Id",   app.Id);
-            symbols.Add(prefix + "App.Name", app.Name);
 
             AppendMetricSymbols(app.CurrentMetrics, symbols, prefix);
             AppendMetricSymbols(app.CurrentMetrics, symbols, prefix + "Current");

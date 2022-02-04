@@ -1,13 +1,30 @@
+// HighlightKPIExport
+// Copyright (C) 2020-2022 David MARKEY
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json; 
 
 using HighlightKPIExport.Client.DTO;
+using HighlightKPIExport.Technical;
 
 namespace HighlightKPIExport.Client {
     // proxy pour les API Highlight
@@ -19,23 +36,15 @@ namespace HighlightKPIExport.Client {
         public Uri BaseUrl { get; private set; }
 
         public void Dispose() {
-            _auth = "";
             _token = null;
             _cred = null;
         }
 
-        private string _auth = "";
+        private Credential _cred = null;
         private AuthToken _token = null;        
-        private NetworkCredential _cred = null;
 
-        public async Task Authenticate(NetworkCredential credential) {
+        public async Task Authenticate(Credential credential) {
             _cred = credential;
-            if (_cred == null) {
-                _auth = "";
-            } else {
-                var userAndPwd = Encoding.UTF8.GetBytes(_cred.UserName + ":" + _cred.Password);
-                _auth = "Basic " + Convert.ToBase64String(userAndPwd);
-            }
             _token = await GetAuthToken();
         }
 
@@ -44,7 +53,7 @@ namespace HighlightKPIExport.Client {
             if (!Uri.TryCreate(BaseUrl, resourceUri, out Uri uri)) throw new InvalidOperationException();
             var req = WebRequest.Create(uri);
             req.Headers.Add("Accept", "application/json");
-            req.Headers.Add("Authorization", _auth);
+            req.Headers.Add("Authorization", _cred.Authorization);
             var resp = await req.GetResponseAsync();
             using (var stream = new StreamReader(resp.GetResponseStream())) {
                 return await stream.ReadToEndAsync();
@@ -53,7 +62,7 @@ namespace HighlightKPIExport.Client {
 
         // appel de l'API /WS2/domains/{domainId}/applications/{appId}
         public async Task<AppInfo> GetAppInfoForApp(string domainId, string appId) {
-            var json = await LoadResourceAsync($"/WS2/domains/{domainId}/applications/{appId}");
+            var json = await LoadResourceAsync($"/WS2/domains/{domainId}/applications/{appId}/?maxEntryPerPage=30&pageOffset=0");
             return JsonConvert.DeserializeObject<AppInfo>(json);
         }
 

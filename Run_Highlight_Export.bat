@@ -4,12 +4,12 @@ REM for help try :
 REM dotnet HighlightKPIExport.dll -h
 
 REM identifiant Highlight du compte utilisé pour la connexion (idéalement l'adresse email d'un compte de service)
-set EMAIL_ADDRESS=user@acme.com
+set EMAIL_ADDRESS=d.markey+SAUR@castsoftware.com
 
 REM l'identifiant du domaine souhaité
 REM cet identifiant peut être récupéré en ouvrant la page "Gérer les applications"
 REM l'URL de cette page est de la forme https://rpa.casthighlight.com/#BusinessUnits/1234/Applications où 1234 est l'identifiant du domaine sélectionné
-set DOMAINID=1234
+set DOMAINID=6491
 
 REM arguments de la ligne de commande
 REM 1ère position = mot de passe ou nom du fichier contenant le mot de passe
