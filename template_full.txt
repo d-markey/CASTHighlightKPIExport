@@ -19,6 +19,11 @@ List of available symbols:
     - Software Elegance Score                      = {SoftwareElegance}
     - Software Resiliency Score                    = {SoftwareResiliency}
     - Open-Source Safety Score                     = {OpenSourceSafety}
+    - CVE - Advisory                               = {CveAdvisory}
+    - CVE - Low                                    = {CveLow}
+    - CVE - Medium                                 = {CveMedium}
+    - CVE - High                                   = {CveHigh}
+    - CVE - Critical                               = {CveCritical}
     - Cloud-Ready Score                            = {CloudReady}
     - Cloud-Ready Scan Score                       = {CloudReadyScan}
     - Number of Roadblocks                         = {Roadblocks}

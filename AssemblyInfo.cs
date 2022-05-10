@@ -18,6 +18,6 @@
 using System.Reflection;
 
 [assembly: AssemblyCompany("CAST Community")]
-[assembly: AssemblyVersion("2022.02.04.1")]
+[assembly: AssemblyVersion("2022.05.10.1")]
 [assembly: AssemblyProductAttribute("HighlightKPIExport")]
 [assembly: AssemblyTitleAttribute("HighlightKPIExport")]

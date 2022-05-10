@@ -1,15 +1,17 @@
 @echo off
 
+set FOLDER=./
+
 REM for help try :
 REM dotnet HighlightKPIExport.dll -h
 
 REM identifiant Highlight du compte utilisé pour la connexion (idéalement l'adresse email d'un compte de service)
-set EMAIL_ADDRESS=d.markey+SAUR@castsoftware.com
+set EMAIL_ADDRESS=user@acme.com
 
 REM l'identifiant du domaine souhaité
 REM cet identifiant peut être récupéré en ouvrant la page "Gérer les applications"
 REM l'URL de cette page est de la forme https://rpa.casthighlight.com/#BusinessUnits/1234/Applications où 1234 est l'identifiant du domaine sélectionné
-set DOMAINID=6491
+set DOMAINID=1234
 
 REM arguments de la ligne de commande
 REM 1ère position = mot de passe ou nom du fichier contenant le mot de passe
@@ -32,7 +34,7 @@ goto readargs
 
 :run
 REM récupération des données depuis Highlight et génération du fichier de sortie
-dotnet HighlightKPIExport.dll --user %EMAIL_ADDRESS% --password %PWD% --domainid %DOMAINID% --template %TEMPLATE% --output %OUTPUT% --verbose %OTHER_ARGS%
+dotnet "%FOLDER%/HighlightKPIExport.dll" --user %EMAIL_ADDRESS% --password %PWD% --domainid %DOMAINID% --template %TEMPLATE% --output %OUTPUT% --verbose %OTHER_ARGS%
 
 REM lancement du fichier de sortie
 start %OUTPUT%

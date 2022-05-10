@@ -16,6 +16,8 @@
 
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HighlightKPIExport.Client.DTO {
     // Modèle de l'entité HL correspondant à un snapshot d'analyse (contient les KPI HL) 
@@ -56,6 +58,38 @@ namespace HighlightKPIExport.Client.DTO {
             }
         }
 
+        public IList<Vulnerability> Vulnerabilities { get; set; }
+
+        public int? cveAdvisory = null;
+        public int? CveAdvisory {
+            get { return cveAdvisory ?? Vulnerabilities?.Count(v => v.CriticityCategory == CriticityCategory.ADVISORY); }
+            set { cveAdvisory = value; }
+        }
+
+        public int? cveLow = null;
+        public int? CveLow {
+            get { return cveLow ?? Vulnerabilities?.Count(v => v.CriticityCategory == CriticityCategory.LOW); }
+            set { cveLow = value; }
+        }
+
+        public int? cveMedium = null;
+        public int? CveMedium {
+            get { return cveMedium ?? Vulnerabilities?.Count(v => v.CriticityCategory == CriticityCategory.MEDIUM); }
+            set { cveMedium = value; }
+        }
+
+        public int? cveHigh = null;
+        public int? CveHigh {
+            get { return cveHigh ?? Vulnerabilities?.Count(v => v.CriticityCategory == CriticityCategory.HIGH); }
+            set { cveHigh = value; }
+        }
+
+        public int? cveCritical = null;
+        public int? CveCritical {
+            get { return cveCritical ?? Vulnerabilities?.Count(v => v.CriticityCategory == CriticityCategory.CRITICAL); }
+            set { cveCritical = value; }
+        }
+
         public static Metric ComputeTrend(Metric current, Metric previous) {
             if (previous == null) return null; 
             var trend = new Metric();
@@ -75,6 +109,23 @@ namespace HighlightKPIExport.Client.DTO {
             trend.BackFiredFP = current.BackFiredFP - previous.BackFiredFP;
             trend.TechnicalDebt = current.TechnicalDebt - previous.TechnicalDebt;
             trend.TechnicalDebtDensity = current.TechnicalDebtDensity - previous.TechnicalDebtDensity;
+
+            if (current.CveAdvisory != null) {
+                trend.CveAdvisory = current.CveAdvisory - (previous.CveAdvisory ?? 0);
+            }
+            if (current.CveLow != null) {
+                trend.CveLow = current.CveLow - (previous.CveLow ?? 0);
+            }
+            if (current.CveMedium != null) {
+                trend.CveMedium = current.CveMedium - (previous.CveMedium ?? 0);
+            }
+            if (current.CveHigh != null) {
+                trend.CveHigh = current.CveHigh - (previous.CveHigh ?? 0);
+            }
+            if (current.CveCritical != null) {
+                trend.CveCritical = current.CveCritical - (previous.CveCritical ?? 0);
+            }
+
             return trend;
         }
     }

@@ -105,12 +105,6 @@ namespace HighlightKPIExport.KPIs {
 
             // récupération des résultats
             var results = await webTaskMonitor.GetResults();
-            var oss = results.SelectMany(app => app.Metrics.Where(m => m.OssDetail != null).Select(m => m.OssDetail)).ToList();
-            if (oss.Any(o => o.OpenSourceCVE != null || o.OpenSourceLicense != null || o.OpenSourceObsolescence != null)) {
-                Console.WriteLine(oss);
-            } else {
-                Console.WriteLine("OSS is empty");
-            }
             return results.OrderByDescending(app => app.CurrentMetrics?.BusinessImpact ?? 0).ToList();
         }
 
@@ -316,6 +310,11 @@ namespace HighlightKPIExport.KPIs {
                 symbols.Add(prefix + "SoftwareElegance",        "-");
                 symbols.Add(prefix + "SoftwareResiliency",      "-");
                 symbols.Add(prefix + "OpenSourceSafety",        "-");
+                symbols.Add(prefix + "CveAdvisory",             "-");
+                symbols.Add(prefix + "CveLow",                  "-");
+                symbols.Add(prefix + "CveMedium",               "-");
+                symbols.Add(prefix + "CveHigh",                 "-");
+                symbols.Add(prefix + "CveCritical",             "-");
                 symbols.Add(prefix + "CloudReady",              "-");
                 symbols.Add(prefix + "CloudReadyScan",          "-");
                 symbols.Add(prefix + "Roadblocks",              "-");
@@ -336,6 +335,11 @@ namespace HighlightKPIExport.KPIs {
                 symbols.Add(prefix + "SoftwareElegance",        (metrics.SoftwareElegance * 100).ToString(sign + "###0.0;'-'###0.0"));
                 symbols.Add(prefix + "SoftwareResiliency",      (metrics.SoftwareResiliency * 100).ToString(sign + "###0.0;'-'###0.0"));
                 symbols.Add(prefix + "OpenSourceSafety",        (metrics.OpenSourceSafety * 100).ToString(sign + "###0.0;'-'###0.0"));
+                symbols.Add(prefix + "CveAdvisory",             metrics.CveAdvisory?.ToString(sign + "###0;'-'###0") ?? "-");
+                symbols.Add(prefix + "CveLow",                  metrics.CveLow?.ToString(sign + "###0;'-'###0") ?? "-");
+                symbols.Add(prefix + "CveMedium",               metrics.CveMedium?.ToString(sign + "###0;'-'###0") ?? "-");
+                symbols.Add(prefix + "CveHigh",                 metrics.CveHigh?.ToString(sign + "###0;'-'###0") ?? "-");
+                symbols.Add(prefix + "CveCritical",             metrics.CveCritical?.ToString(sign + "###0;'-'###0") ?? "-");
                 symbols.Add(prefix + "CloudReady",              (metrics.CloudReady * 100).ToString(sign + "###0.0;'-'###0.0"));
                 symbols.Add(prefix + "CloudReadyScan",          (metrics.CloudReadyScan * 100).ToString(sign + "###0.0;'-'###0.0"));
                 symbols.Add(prefix + "Roadblocks",              metrics.Roadblocks.ToString(sign + "###0;'-'###0"));
